@@ -1,0 +1,32 @@
+.pagination {
+    justify-content: flex-end;
+
+    .page-item {
+        background-color: $white;
+        border-top: 1px solid $lightgreen;
+        border-right: 1px solid $lightgreen;
+        border-bottom: 1px solid $lightgreen;
+        font-size: 20px;
+
+        &:first-child {
+            border-left: 1px solid $lightgreen;
+
+            .page-link {
+                background-color: $white;
+            }
+        }
+
+        &:last-child {
+            .page-link {
+                background-color: $white;
+            }
+        }
+    }
+}
+
+@media (max-width:768px) {
+    .pagination {
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+}

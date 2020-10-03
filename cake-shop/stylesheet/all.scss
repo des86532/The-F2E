@@ -1,0 +1,34 @@
+//helper
+@import "../node_modules/bootstrap/scss/functions";
+@import "helper/variables";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+//reset
+@import "scss/reset";
+
+//layout
+@import "scss/layout";
+
+//index
+@import "scss/banner";
+@import "scss/inner-items";
+@import "scss/article";
+@import "scss/card-list";
+
+//product
+@import "scss/pagination";
+
+//login 
+@import "scss/login-social";
+
+//cart
+@import "scss/cart";
+
+//checkout
+@import "scss/checkout";
+
+//success
+@import "scss/checkout-success";
+
+//custom
+@import "scss/custom";
