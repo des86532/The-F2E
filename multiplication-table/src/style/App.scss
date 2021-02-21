@@ -1,0 +1,105 @@
+$gray:#F0F0F0;
+$white:#FFFFFF;
+$deepgray:#D8D8D8;
+$green:#2EB738;
+$shadow: #D8D8D8;
+
+.multiplication {
+    margin: 0 auto;
+    background-color: $gray;
+    height: 1338px;
+    width: 1280px;
+    padding: 80px 85px;
+    color: $green;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+
+    .multiplicationTitleBlock {
+        width: 350px;
+        height: 366px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+
+        .boundary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .dot {
+                font-size: 24px;
+            }
+
+            .line {
+                width: 280px;
+                border-top: 1px solid $green;
+            }
+        }
+
+        &__title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &__title1 {
+                font-size: 56px;
+                padding: 11px 0;
+            }
+
+            &__title2 {
+                font-size: 24px;
+            }
+        }
+    }
+
+    .multiplicationBlock {
+        background-color:$white;
+        width: 350px;
+        height: 366px;
+        border-radius: 100px 0 30px 0;
+        box-shadow: 0 3px 10px $shadow;
+        padding: 64px 40px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        &__title {
+            font-family: 'Helvetica Neue';
+            font-size: 128px;
+            font-weight:bold;
+            text-shadow: 4px 3px 0px $gray;
+            padding-left: 20px;
+            position: relative;
+            top: -20px;
+        }
+
+        &__detail {
+            font-size: 24px;
+            margin-bottom: 8px;
+
+            &:nth-child(4) {
+                margin-bottom: 0px;  
+            }
+
+            &:nth-child(10) {
+                margin-bottom: 0px;
+            }
+        }
+    }
+
+
+}
+
+.footer {
+    margin: 0 auto;
+    width: 1280px;
+    padding: 9px 85px;
+    background-color: $green;
+    display: flex;
+    justify-content: flex-end;
+    color: $white;
+}
