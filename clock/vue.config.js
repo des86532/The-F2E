@@ -1,3 +1,0 @@
-module.exports = {
-  publicPath: '/The-F2E/clock/'
-}
