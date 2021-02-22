@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="panels">
+    <div class="panel">
+      <h3>Morse Code Translation</h3>
+      <h1>摩斯密碼翻譯器</h1>
+      <textarea name="" id="input" cols="30" rows="10" class="eng" rows="4" placeholder="輸入英文"></textarea>
+      <div class="symbol">⇅</div>
+      <textarea name="" id="output" cols="30" rows="10" class="morse" rows="4" placeholder="輸入密碼"></textarea>
+      <div class="playlist"></div>
+      <div class="buttons">
+        <button class="purple" id="btnMorse">翻譯成密碼</button>
+        <button class="yellow" id="btnEng">翻譯回來</button>
+        <button class="white" id="btnPlay">播放</button>
+      </div>
+    </div>
+    <div class="panel yellow">
+      <h3>翻譯清單</h3>
+      <hr>
+      <ul class="translist"></ul>
+    </div>
+  </div>
+  <div class="decoration">MORSE CODE</div>
+  <audio src="./short.mp3" class="short"></audio>
+  <audio src="./long.mp3" class="long"></audio>
+</body>
+<script>
+const morseCode = "A;.-|B;-...|C;-.-.|D;-..|E;.|F;..-.|G;--.|H;....|I;..|J;.---|K;-.-|L;.-..|M;--|N;-.|O;---|P;.--.|Q;--.-|R;.-.|S;...|T;-|U;..-|V;...-|W;.--|X;-..-|Y;-.--|Z;--..|/;-..-.|1;.----|2;..---|3;...--|4;....-|5;.....|6;-....|7;--...|8;---..|9;----.|0;-----"
+
+const morseList = morseCode.split("|")
+
+for (let i = 0; i < morseList.length; i++) {
+  morseList[i] = morseList[i].split(';')
+  let parent = document.createElement("li")
+  parent.innerText = morseList[i][0]+"  "+morseList[i][1]
+  document.querySelector('ul.translist').append(parent)
+}
+
+function findCode(letter) {
+  for (let i = 0; i < morseList.length; i++) {
+    if (morseList[i][0] === letter) {
+      return morseList[i][1]
+    }
+  }
+  return letter
+}
+
+function findLetter(code) {
+  for (let i = 0; i < morseList.length; i++) {
+    if (morseList[i][1] === code) {
+      return morseList[i][0]
+    }
+  }
+  return code
+}
+
+function translateToMorse(text) {
+  text = text.toUpperCase();
+  let result = ''
+  for (i = 0; i < text.length; i++) {
+    result += findCode(text[i]) + " "
+  }
+  return result
+}
+
+function translateToEng(text) {
+  text = text.split(' ')
+  let result = ''
+  for (i = 0; i < text.length; i++) {
+    result += findLetter(text[i]) + ""
+  }
+  return result
+}
+
+document.getElementById('btnMorse').addEventListener('click', function() {
+  document.querySelector('.symbol').animate(
+    [
+      { transform: 'rotate(0)' },
+      { transform: 'rotate(360deg)' }   
+    ], {
+      duration: 300,
+    });
+  setTimeout(() => {
+    document.querySelector('.symbol').style ="transform: rotate(180deg)"
+  }, 300)
+  document.querySelector('.morse').style = 'background-color: #292B73'
+  setTimeout(() => {
+    document.querySelector('.morse').style = 'background-color: #ffffff'
+  }, 300)
+  const input = document.getElementById('input').value
+  const result = translateToMorse(input)
+  document.getElementById('output').value = result
+})
+
+document.getElementById('btnEng').addEventListener('click', function() {
+   document.querySelector('.symbol').animate(
+    [
+      { transform: 'rotate(0)' },
+      { transform: 'rotate(360deg)' }   
+    ], {
+      duration: 300,
+    });
+  document.querySelector('.eng').style = 'background-color: #292B73'
+  setTimeout(() => {
+    document.querySelector('.eng').style = 'background-color: #ffffff'
+  }, 300)
+  const input = document.getElementById('output').value
+  const result = translateToEng(input)
+  document.getElementById('input').value = result
+})
+
+document.getElementById('input').addEventListener('keyup', function() {
+  const original = document.getElementById('input').value
+  const newtext = original.toUpperCase().split(' ').join('')
+  document.getElementById('input').value = newtext
+})
+
+function play(texts, nowindex) {
+  const word = texts[nowindex]
+  let lasttime = 300
+  if (word == '.') {
+    document.querySelector('audio.short').play()
+    lasttime = 300
+  } else if (word == '-') {
+    document.querySelector('audio.long').play()
+    lasttime = 500
+  } else {
+    lasttime = 1000
+  }
+  
+  if (texts.length > nowindex) {
+    document.querySelectorAll('.playlist span')[nowindex].classList.add('playing')
+    setTimeout(function () {
+      play(texts, nowindex + 1)
+      document.querySelectorAll('.playlist span')[nowindex].classList.remove('playing')
+    }, lasttime)
+  }
+}
+
+document.querySelector('audio.short').volume = 0.3
+document.querySelector('audio.long').volume = 0.3
+
+document.getElementById('btnPlay').addEventListener('click', function() {
+  const texts = document.getElementById('output').value
+  
+  document.querySelector('.playlist').innerText = ''
+  for (let i = 0; i < texts.length; i++) {
+    const word = document.createElement('span')
+    word.innerText = texts[i]
+    document.querySelector('.playlist').append(word)
+  }
+  
+  play(texts, 0)
+})
+</script>
+</html>
