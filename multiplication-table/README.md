@@ -1,4 +1,4 @@
-# 1.multiplication-table
+# multiplication-table
 
 ## Project setup
 ```
