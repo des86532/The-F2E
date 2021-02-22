@@ -19,3 +19,7 @@ https://des86532.github.io/The-F2E/clock/
 ## ball-game
 
 https://des86532.github.io/The-F2E/ball-game/
+
+## morse-code-translate
+
+https://des86532.github.io/The-F2E/morse-code-translate/
