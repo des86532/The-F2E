@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./main.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="game">
+    <div class="board b1"></div>
+    <div class="board b2"></div>
+    <div class="ball"></div>
+    <div class="info">
+      <h2 class="infoText"></h2>
+      <button class="start" onclick="game.startGame()">start</button>
+    </div>
+    <div class="grade">5656</div>
+  </div>
+</body>
+<script>
+  // 全域
+const GameObject = function(position, size, selector) {
+  this.self = document.querySelector(selector)
+  this.self.style.position = 'absolute'
+  this.position = position
+  this.size = size
+}
+
+GameObject.prototype.updateCss = function() {
+  this.self.style.left = this.position.x + 'px'
+  this.self.style.top = this.position.y + 'px'
+  this.self.style.width = this.size.x + 'px'
+  this.self.style.height = this.size.y + 'px'
+}
+
+GameObject.prototype.collide = function(otherObject) {
+  const inRangeX = otherObject.position.x + otherObject.size.x >= this.position.x && otherObject.position.x <= this.position.x + this.size.x;
+  const inRangeY = otherObject.position.y + otherObject.size.y >= this.position.y && otherObject.position.y <= this.position.y + this.size.y;
+  return inRangeX && inRangeY;
+}
+
+// 球
+const Ball = function() {
+  this.init()
+  GameObject.call(this, this.position, { x: 20, y: 20 }, '.ball')
+}
+
+Ball.prototype = Object.create(GameObject.prototype)
+Ball.prototype.init = function() {
+  this.velocity = { x: 5, y: 5 }
+  this.position = { x: 250 - Math.random() * 100, y: 250 - Math.random() * 100 }
+}
+Ball.prototype.update = function() {
+  if (this.position.x < 5 || this.position.x > 475) {
+    this.velocity.x = -this.velocity.x
+  }
+  
+  if (this.position.y < 5 || this.position.y > 475) {
+    this.velocity.y = -this.velocity.y
+  }
+  this.position.x += this.velocity.x
+  this.position.y += this.velocity.y
+  this.updateCss();
+}
+
+const ball = new Ball()
+
+const Board = function(position, selector) {
+  this.size = {
+    x: 100,
+    y: 15
+  }
+  GameObject.call(this, position, this.size, selector)
+  this.updateCss();
+}
+
+// 板子
+Board.prototype = Object.create(GameObject.prototype)
+Board.prototype.constuctor = Board.constructor
+Board.prototype.update = function() {
+  if (this.position.x < 0) {
+    this.position.x = 0
+  }
+  
+  if (this.position.x + this.size.x > 495) {
+    this.position.x = 500 - this.size.x;
+  }
+  this.updateCss();
+}
+
+const board1 = new Board({ x: 0, y: 30 }, '.b1')
+const board2 = new Board({ x: 0, y: 455 }, '.b2')
+
+const Game = function() {
+  this.timer = null;
+  this.initControl()
+  this.control = {}
+  this.grade = 0;
+}
+
+Game.prototype.startGame = function() {
+  let time = 3
+  document.querySelector('.infoText').innerText = time;
+  const count = setInterval(() => {
+    time -= 1;
+    if (time === 0) {
+      clearInterval(count);
+      document.querySelector('.info').style.visibility = "hidden";
+      this.startGameMain();
+    }
+    document.querySelector('.infoText').innerText = time;
+  }, 1000)
+}
+
+Game.prototype.initControl = function() {
+  let _this = this;
+  document.addEventListener('keydown', (e) => {
+    _this.control[e.key] = true
+  })
+  document.addEventListener('keyup', (e) => {
+    _this.control[e.key] = false
+  })
+}
+
+Game.prototype.startGameMain = function() {
+  let _this = this;
+  this.timer = setInterval(function() {
+    document.querySelector('.grade').innerText = _this.grade;
+    if (board1.collide(ball)) {
+      ball.velocity.y = -ball.velocity.y
+    }
+    if (board2.collide(ball)) {
+      _this.grade += 10
+      ball.velocity.y = -ball.velocity.y
+    }
+    if (ball.position.y < 5) {
+      _this.endGame('board 1 lose');
+    }
+    if (ball.position.y > 475) {
+      _this.endGame('board 2 lose');
+    }
+    if (_this.control['ArrowLeft']) {
+      board2.position.x -= 8
+    }
+    if (_this.control['ArrowRight']) {
+      board2.position.x += 8
+    }
+    
+    board1.position.x = ball.position.x - board1.size.x / 2
+    
+    ball.update()
+    board1.update()
+    board2.update()
+  }, 30)
+}
+
+Game.prototype.endGame = function(result) {
+  clearInterval(this.timer);
+  document.querySelector('.info').style.visibility = "visible";
+  document.querySelector('.infoText').innerText = 'Score: ' + this.grade;
+  this.grade = 0
+}
+
+const game = new Game()
+</script>
+</html>
