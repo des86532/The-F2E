@@ -1,4 +1,4 @@
-# 2.vue-clock
+# clock
 
 ## Project setup
 ```
