@@ -31,3 +31,7 @@ https://des86532.github.io/The-F2E/city/
 ## pomodoro
 
 https://des86532.github.io/The-F2E/pomodoro/
+
+## gogoro-homepage
+
+https://des86532.github.io/The-F2E/gogoro-homepage/
