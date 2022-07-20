@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/pomodoro/'
+  publicPath: '/The-F2E/pomodoro/'
 }
